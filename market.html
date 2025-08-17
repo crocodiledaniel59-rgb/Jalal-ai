@@ -1,100 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jalal App Store</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f5f5f5;
-    }
-
-    header {
-      background-color: #4CAF50;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .app-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .app-card {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      width: 200px;
-      text-align: center;
-      padding: 15px;
-    }
-
-    .app-card img {
-      width: 100%;
-      border-radius: 10px;
-    }
-
-    .app-card button {
-      margin-top: 10px;
-      padding: 10px 15px;
-      border: none;
-      background-color: #4CAF50;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
-    .app-card button:hover {
-      background-color: #45a049;
-    }
-
-    footer {
-      text-align: center;
-      padding: 15px;
-      background-color: #333;
-      color: white;
-    }
-  </style>
-  <script>
-    function downloadApp(url) {
-      window.location.href = url; // langsung download file
-    }
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prank Virus</title>
+<style>
+  body {
+    font-family: monospace;
+    background: black;
+    color: red;
+    text-align: center;
+    padding: 50px;
+  }
+  .warning {
+    font-size: 2em;
+    animation: blink 1s infinite;
+  }
+  @keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+  }
+  button {
+    padding: 15px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+</style>
+<script>
+  function startPrank() {
+    alert("⚠ WARNING! Malware detected!");
+    document.body.innerHTML = `
+      <h1 class="warning">SYSTEM COMPROMISED!</h1>
+      <p>All your files are safe, chill</p>
+      <button onclick="location.reload()">RESET</button>
+    `;
+  }
+</script>
 </head>
 <body>
-  <header>
-    <h1>Jalal App Store</h1>
-    <p>Download aplikasi favoritmu dengan mudah</p>
-  </header>
-
-  <main>
-    <div class="app-container">
-      <!-- Contoh 1 -->
-      <div class="app-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Duolingo_logo.svg" alt="Duolingo" width="200">
-        <h3>Duolingo</h3>
-        <button onclick="downloadApp('https://www.mediafire.com/file/74snziwqnn7iz4m/Duolingo_Plus_v6.43.4_-_androforever.com.apk/file')">Download</button>
-      </div>
-
-      <!-- Contoh 2 -->
-      <div class="app-card">
-        <img src="https://via.placeholder.com/200x200.png?text=App+2" alt="App 2">
-        <h3>App 2</h3>
-        <button onclick="downloadApp('https://example.com/app2.apk')">Download</button>
-      </div>
-    </div>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Jalal App Store</p>
-  </footer>
+  <h1> VIRUS attack your device </h1>
+  <p>Tekan tombol dibawah untuk “mengaktifkan virus”</p>
+  <button onclick="startPrank()">Start Virus</button>
 </body>
 </html>
