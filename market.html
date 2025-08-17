@@ -3,94 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⚠ SYSTEM ALERT ⚠</title>
+<title>Device Cleaner</title>
 <style>
   body {
-    margin: 0;
-    padding: 0;
+    margin:0; padding:0;
     font-family: monospace;
     background: black;
     color: red;
-    text-align: center;
     overflow: hidden;
+    text-align:center;
   }
-  .warning {
-    font-size: 3em;
-    animation: blink 0.7s infinite;
-    margin-top: 50px;
+  .glitchText {
+    position:absolute;
+    font-size:1.5em;
+    color:red;
+    animation: move 3s linear infinite;
   }
-  @keyframes blink {
-    0%, 50%, 100% { opacity: 1; }
-    25%, 75% { opacity: 0; }
+  @keyframes move {
+    0% {top:0; left:0;}
+    25% {top:20%; left:70%;}
+    50% {top:60%; left:20%;}
+    75% {top:40%; left:80%;}
+    100% {top:0; left:0;}
   }
   button {
-    padding: 15px 25px;
-    font-size: 18px;
-    cursor: pointer;
-    background: red;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-top: 50px;
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:5px;
+    background:#0f0;
+    color:#000;
+    cursor:pointer;
+    margin-top:50px;
+    position:relative;
     transition: transform 0.2s;
   }
-  button:active {
-    transform: scale(0.95);
-  }
-  .glitch {
-    color: red;
-    font-size: 2em;
-    animation: glitch 0.2s infinite;
-  }
-  @keyframes glitch {
-    0% { transform: translate(0);}
-    20% { transform: translate(-2px,2px);}
-    40% { transform: translate(2px,-2px);}
-    60% { transform: translate(-2px,1px);}
-    80% { transform: translate(1px,-1px);}
-    100% { transform: translate(0);}
-  }
+  button:active { transform: scale(0.95); }
 </style>
 <script>
   function startPrank() {
-    // Stuck effect dulu
-    let button = document.querySelector('button');
-    button.disabled = true;
-    button.innerText = "Processing...";
+    let btn = document.querySelector('button');
+    btn.disabled = true;
+    btn.innerText = "Processing...";
     
     setTimeout(() => {
-      // Flash background & popup
-      let count = 0;
-      function flash() {
-        if(count < 15) {
-          document.body.style.background = count % 2 === 0 ? "red" : "black";
-          count++;
-          setTimeout(flash, 300);
-        }
+      document.body.innerHTML = '';
+      document.body.style.background = 'red';
+
+      const phrases = ["Parsing data...","SYSTEM ERROR!","YOU ARE AN IDIOT!","Critical failure detected","Wihhh!"];
+      for(let i=0;i<20;i++){
+        let span = document.createElement('div');
+        span.className='glitchText';
+        span.innerText = phrases[Math.floor(Math.random()*phrases.length)];
+        span.style.top=Math.random()*80+'%';
+        span.style.left=Math.random()*80+'%';
+        document.body.appendChild(span);
       }
-      flash();
 
-      let popCount = 0;
-      let popupInterval = setInterval(() => {
-        if(popCount < 6) {
-          alert("⚠ SYSTEM ERROR!");
-          popCount++;
-        } else clearInterval(popupInterval);
-      }, 1000);
+      let popCount=0;
+      let popupInterval=setInterval(()=>{
+        if(popCount<8){ alert("⚠ SYSTEM ERROR!"); popCount++; } 
+        else clearInterval(popupInterval);
+      },800);
 
-      // Fullscreen prank
-      document.body.innerHTML = `
-        <h1 class="warning">SYSTEM COMPROMISED!</h1>
-        <p class="glitch">Critical failure detected...</p>
-        <button onclick="location.reload()">RESET</button>
-      `;
-    }, 2000); // stuck sebentar 2 detik
+      let resetBtn=document.createElement('button');
+      resetBtn.innerText="RESET";
+      resetBtn.style.position='absolute';
+      resetBtn.style.bottom='50px';
+      resetBtn.style.left='50%';
+      resetBtn.style.transform='translateX(-50%)';
+      document.body.appendChild(resetBtn);
+
+      resetBtn.addEventListener('mouseover',()=>{
+        let x=Math.random()*80;
+        let y=Math.random()*80;
+        resetBtn.style.left=x+'%';
+        resetBtn.style.top=y+'%';
+        resetBtn.style.transform='translate(0,0)';
+      });
+
+      resetBtn.onclick=()=>location.reload();
+    },2000);
   }
 </script>
 </head>
 <body>
-  <h1>⚠ SYSTEM ALERT ⚠</h1>
-  <p>Tekan tombol dibawah untuk clean your device</p>
-  <button onclick="startPrank()">Clean your device</button>
+  <h1>Device Cleaner</h1>
+  <p>Tekan tombol dibawah untuk membersihkan device anda</p>
+  <button onclick="startPrank()">Clean Your Device</button>
 </body>
 </html>
