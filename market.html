@@ -3,18 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prank Virus</title>
+<title>⚠ SYSTEM ALERT ⚠</title>
 <style>
   body {
+    margin: 0;
+    padding: 0;
     font-family: monospace;
     background: black;
     color: red;
     text-align: center;
-    padding: 50px;
+    overflow: hidden;
   }
   .warning {
-    font-size: 2em;
-    animation: blink 1s infinite;
+    font-size: 3em;
+    animation: blink 0.7s infinite;
+    margin-top: 50px;
   }
   @keyframes blink {
     0%, 50%, 100% { opacity: 1; }
@@ -22,29 +25,72 @@
   }
   button {
     padding: 15px 25px;
-    font-size: 16px;
+    font-size: 18px;
     cursor: pointer;
     background: red;
     color: white;
     border: none;
     border-radius: 5px;
-    margin-top: 20px;
+    margin-top: 50px;
+    transition: transform 0.2s;
+  }
+  button:active {
+    transform: scale(0.95);
+  }
+  .glitch {
+    color: red;
+    font-size: 2em;
+    animation: glitch 0.2s infinite;
+  }
+  @keyframes glitch {
+    0% { transform: translate(0);}
+    20% { transform: translate(-2px,2px);}
+    40% { transform: translate(2px,-2px);}
+    60% { transform: translate(-2px,1px);}
+    80% { transform: translate(1px,-1px);}
+    100% { transform: translate(0);}
   }
 </style>
 <script>
   function startPrank() {
-    alert("⚠ WARNING! Malware detected!");
-    document.body.innerHTML = `
-      <h1 class="warning">TERDETEKSI</h1>
-      <p>plikasi bernama cogoreo.llimaate.apk menyerang device anda!</p>
-      <button onclick="location.reload()">RESET</button>
-    `;
+    // Stuck effect dulu
+    let button = document.querySelector('button');
+    button.disabled = true;
+    button.innerText = "Processing...";
+    
+    setTimeout(() => {
+      // Flash background & popup
+      let count = 0;
+      function flash() {
+        if(count < 15) {
+          document.body.style.background = count % 2 === 0 ? "red" : "black";
+          count++;
+          setTimeout(flash, 300);
+        }
+      }
+      flash();
+
+      let popCount = 0;
+      let popupInterval = setInterval(() => {
+        if(popCount < 6) {
+          alert("⚠ SYSTEM ERROR!");
+          popCount++;
+        } else clearInterval(popupInterval);
+      }, 1000);
+
+      // Fullscreen prank
+      document.body.innerHTML = `
+        <h1 class="warning">SYSTEM COMPROMISED!</h1>
+        <p class="glitch">Critical failure detected...</p>
+        <button onclick="location.reload()">RESET</button>
+      `;
+    }, 2000); // stuck sebentar 2 detik
   }
 </script>
 </head>
 <body>
-  <h1> VIRUS attack your device </h1>
-  <p>Tekan tombol dibawah untuk “mengaktifkan pencarian”</p>
-  <button onclick="startPrank()">kill</button>
+  <h1>⚠ SYSTEM ALERT ⚠</h1>
+  <p>Tekan tombol dibawah untuk clean your device</p>
+  <button onclick="startPrank()">Clean your device</button>
 </body>
 </html>
