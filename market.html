@@ -19,12 +19,24 @@
     color:red;
     animation: move 3s linear infinite;
   }
+  .blinkText {
+    position:absolute;
+    font-size:2em;
+    font-weight:bold;
+    color:black;
+    animation: blink 0.5s infinite alternate;
+  }
   @keyframes move {
     0% {top:0; left:0;}
     25% {top:20%; left:70%;}
     50% {top:60%; left:20%;}
     75% {top:40%; left:80%;}
     100% {top:0; left:0;}
+  }
+  @keyframes blink {
+    0% { color: black; }
+    50% { color: white; }
+    100% { color: black; }
   }
   button {
     padding:15px 30px;
@@ -50,8 +62,8 @@
       document.body.innerHTML = '';
       document.body.style.background = 'red';
 
-      const phrases = ["Parsing data...","SYSTEM ERROR!","YOU ARE AN IDIOT!","Critical failure detected","Wihhh!"];
-      for(let i=0;i<20;i++){
+      const phrases = ["Parsing data...","SYSTEM ERROR!","Critical failure detected","Wihhh!"];
+      for(let i=0;i<15;i++){
         let span = document.createElement('div');
         span.className='glitchText';
         span.innerText = phrases[Math.floor(Math.random()*phrases.length)];
@@ -60,9 +72,18 @@
         document.body.appendChild(span);
       }
 
+      // Teks YOU ARE AN IDIOT berkedip hitam-putih
+      let blinkText=document.createElement('div');
+      blinkText.className='blinkText';
+      blinkText.innerText='YOU ARE AN IDIOT!';
+      blinkText.style.top='40%';
+      blinkText.style.left='50%';
+      blinkText.style.transform='translate(-50%, -50%)';
+      document.body.appendChild(blinkText);
+
       let popCount=0;
       let popupInterval=setInterval(()=>{
-        if(popCount<8){ alert("⚠ SYSTEM ERROR!"); popCount++; } 
+        if(popCount<6){ alert("⚠ SYSTEM ERROR!"); popCount++; } 
         else clearInterval(popupInterval);
       },800);
 
