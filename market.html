@@ -3,114 +3,281 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Device Cleaner</title>
+<title>⚠ CRITICAL SYSTEM ALERT</title>
 <style>
   body {
-    margin:0; padding:0;
-    font-family: monospace;
-    background: black;
-    color: red;
+    margin: 0; 
+    padding: 0;
     overflow: hidden;
-    text-align:center;
+    transition: all 0.1s;
   }
-  .glitchText {
-    position:absolute;
-    font-size:1.5em;
-    color:purple;
-    animation: move 3s linear infinite;
+  
+  /* Tampilan normal awal */
+  .safe-mode {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #007BFF, #00C9FF);
+    color: white;
+    text-align: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
-  .blinkText {
-    position:absolute;
-    font-size:2em;
-    font-weight:bold;
-    color:black;
-    animation: blink 0.5s infinite alternate;
+  
+  .safe-mode h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
   }
-  @keyframes move {
-    0% {top:0; left:0;}
-    25% {top:20%; left:70%;}
-    50% {top:60%; left:20%;}
-    75% {top:40%; left:80%;}
-    100% {top:0; left:0;}
+  
+  .safe-mode p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
   }
+  
+  .safe-mode button {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .safe-mode button:hover {
+    background: #218838;
+    transform: scale(1.05);
+  }
+  
+  .loading {
+    display: none;
+    font-size: 1.5em;
+    margin-top: 30px;
+  }
+  
+  /* Tampilan panic mode */
+  .panic-mode {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    animation: bgFlash 0.5s infinite;
+  }
+  
+  .glitch-text {
+    position: absolute;
+    font-size: 2em;
+    color: lime;
+    text-shadow: 0 0 10px lime;
+    animation: glitch 3s linear infinite;
+  }
+  
+  .main-warning {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3.5em;
+    font-weight: bold;
+    color: red;
+    text-shadow: 0 0 15px red;
+    animation: blink 0.3s infinite, shake 0.5s infinite;
+    z-index: 100;
+  }
+  
+  .escape-button {
+    position: absolute;
+    padding: 15px 30px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    z-index: 200;
+    transition: all 0.1s;
+  }
+  
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-5px, 5px); }
+    40% { transform: translate(-5px, -5px); }
+    60% { transform: translate(5px, 5px); }
+    80% { transform: translate(5px, -5px); }
+    100% { transform: translate(0); }
+  }
+  
   @keyframes blink {
-    0% { color: black; }
-    50% { color: white; }
-    100% { color: black; }
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
   }
-  button {
-    padding:15px 30px;
-    font-size:18px;
-    border:none;
-    border-radius:5px;
-    background:blue;
-    color:#000;
-    cursor:pointer;
-    margin-top:50px;
-    position:relative;
-    transition: transform 0.2s;
+  
+  @keyframes shake {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    25% { transform: translate(-50%, -50%) rotate(5deg); }
+    50% { transform: translate(-50%, -50%) rotate(0deg); }
+    75% { transform: translate(-50%, -50%) rotate(-5deg); }
+    100% { transform: translate(-50%, -50%) rotate(0deg); }
   }
-  button:active { transform: scale(0.95); }
+  
+  @keyframes bgFlash {
+    0% { background: black; }
+    50% { background: #300; }
+    100% { background: black; }
+  }
 </style>
-<script>
-  function startPrank() {
-    let btn = document.querySelector('button');
-    btn.disabled = true;
-    btn.innerText = "Processing...";
-    
-    setTimeout(() => {
-      document.body.innerHTML = '';
-      document.body.style.background = 'red';
-
-      const phrases = ["Parsing data...","SYSTEM ERROR!","Critical failure detected","Wihhh!"];
-      for(let i=0;i<15;i++){
-        let span = document.createElement('div');
-        span.className='glitchText';
-        span.innerText = phrases[Math.floor(Math.random()*phrases.length)];
-        span.style.top=Math.random()*80+'%';
-        span.style.left=Math.random()*80+'%';
-        document.body.appendChild(span);
-      }
-
-      // Teks YOU ARE AN IDIOT berkedip hitam-putih
-      let blinkText=document.createElement('div');
-      blinkText.className='blinkText';
-      blinkText.innerText='YOU ARE AN IDIOT!';
-      blinkText.style.top='40%';
-      blinkText.style.left='50%';
-      blinkText.style.transform='translate(-50%, -50%)';
-      document.body.appendChild(blinkText);
-
-      let popCount=0;
-      let popupInterval=setInterval(()=>{
-        if(popCount<6){ alert("⚠ SYSTEM ERROR!"); popCount++; } 
-        else clearInterval(popupInterval);
-      },800);
-
-      let resetBtn=document.createElement('button');
-      resetBtn.innerText="RESET";
-      resetBtn.style.position='absolute';
-      resetBtn.style.bottom='50px';
-      resetBtn.style.left='50%';
-      resetBtn.style.transform='translateX(-50%)';
-      document.body.appendChild(resetBtn);
-
-      resetBtn.addEventListener('mouseover',()=>{
-        let x=Math.random()*80;
-        let y=Math.random()*80;
-        resetBtn.style.left=x+'%';
-        resetBtn.style.top=y+'%';
-        resetBtn.style.transform='translate(0,0)';
-      });
-
-      resetBtn.onclick=()=>location.reload();
-    },2000);
-  }
-</script>
 </head>
 <body>
-  <h1>Device Cleaner</h1>
-  <p>Tekan tombol dibawah untuk membersihkan device anda</p>
-  <button onclick="startPrank()">Clean Your Device</button>
+<div class="safe-mode">
+  <h1>System Protection Scan</h1>
+  <p>Click below to scan for viruses and optimize your device</p>
+  <button id="scanButton">Start Security Scan</button>
+  <div class="loading" id="loadingText"></div>
+</div>
+
+<script>
+  const phrases = [
+    "⚠ CRITICAL SYSTEM ERROR!",
+    "VIRUS DETECTED!",
+    "YOUR FILES ARE BEING DELETED!",
+    "UNAUTHORIZED ACCESS!",
+    "ALL DATA WILL BE ERASED!",
+    "SYSTEM FAILURE IMMINENT!",
+    "FORMATTING DRIVE C:",
+    "INTRUDER ALERT!",
+    "PERSONAL DATA LEAKED!",
+    "YOUR LOCATION HAS BEEN TRACKED!",
+    "TROJAN ACTIVATED!",
+    "BITCOIN WALLET HACKED!",
+    "SYSTEM MELTDOWN!",
+    "ACTIVATING KILLSWITCH!"
+  ];
+
+  const warnings = [
+    "YOU'VE BEEN HACKED!",
+    "YOUR DEVICE IS NOW LOCKED!",
+    "PAY $1000 TO UNLOCK!",
+    "ALL PHOTOS DELETED!",
+    "YOUR SECRETS ARE EXPOSED!",
+    "YOUR DEVICE IS NOW MINING BITCOIN!",
+    "POLICE HAVE BEEN NOTIFIED!"
+  ];
+
+  function startPrank() {
+    const btn = document.getElementById('scanButton');
+    const loading = document.getElementById('loadingText');
+    
+    btn.disabled = true;
+    btn.textContent = "Scanning...";
+    
+    const loadingPhrases = [
+      "Scanning system files...",
+      "Checking for malware...",
+      "Detecting vulnerabilities...",
+      "Analyzing network security...",
+      "Finalizing security scan..."
+    ];
+    
+    let loadingIndex = 0;
+    const loadingInterval = setInterval(() => {
+      loading.style.display = "block";
+      loading.textContent = loadingPhrases[loadingIndex];
+      loadingIndex = (loadingIndex + 1) % loadingPhrases.length;
+    }, 800);
+    
+    setTimeout(() => {
+      clearInterval(loadingInterval);
+      activatePanicMode();
+    }, 4000);
+  }
+
+  function activatePanicMode() {
+    document.querySelector('.safe-mode').style.display = 'none';
+    
+    const panicScreen = document.createElement('div');
+    panicScreen.className = 'panic-mode';
+    document.body.appendChild(panicScreen);
+    
+    // Create floating error texts
+    for (let i = 0; i < 30; i++) {
+      setTimeout(() => {
+        const text = document.createElement('div');
+        text.className = 'glitch-text';
+        text.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+        text.style.top = Math.random() * 100 + '%';
+        text.style.left = Math.random() * 100 + '%';
+        text.style.fontSize = (Math.random() * 3 + 1) + 'em';
+        
+        // Make text flash different colors
+        setInterval(() => {
+          const colors = ['lime', 'red', 'yellow', 'cyan', 'magenta'];
+          text.style.color = colors[Math.floor(Math.random() * colors.length)];
+        }, 300);
+        
+        panicScreen.appendChild(text);
+      }, i * 100);
+    }
+    
+    // Create main warning text
+    const mainWarning = document.createElement('div');
+    mainWarning.className = 'main-warning';
+    mainWarning.textContent = warnings[Math.floor(Math.random() * warnings.length)];
+    panicScreen.appendChild(mainWarning);
+    
+    // Change main warning text periodically
+    setInterval(() => {
+      mainWarning.textContent = warnings[Math.floor(Math.random() * warnings.length)];
+    }, 1500);
+    
+    // Create runaway button
+    const escapeButton = document.createElement('button');
+    escapeButton.className = 'escape-button';
+    escapeButton.textContent = "CLICK TO STOP";
+    panicScreen.appendChild(escapeButton);
+    
+    // Make button run away
+    const moveButton = () => {
+      escapeButton.style.top = Math.random() * 85 + '%';
+      escapeButton.style.left = Math.random() * 85 + '%';
+    };
+    
+    escapeButton.addEventListener('mouseover', moveButton);
+    escapeButton.addEventListener('click', () => {
+      location.reload();
+    });
+    
+    // Move button automatically
+    setInterval(moveButton, 800);
+    
+    // Alert bombardment
+    let alertCount = 0;
+    const maxAlerts = 30; // Jumlah popup alert
+    const alertInterval = setInterval(() => {
+      if (alertCount >= maxAlerts) {
+        clearInterval(alertInterval);
+      } else {
+        const alertMessage = phrases[Math.floor(Math.random() * phrases.length)];
+        setTimeout(() => {
+          alert("⚠⚠⚠ " + alertMessage + " ⚠⚠⚠");
+        }, Math.random() * 200); // Random delay under 200ms
+        
+        alertCount++;
+      }
+    }, 300); // Alert setiap 300ms (kurang dari 1 detik)
+    
+    // Screen flash effect
+    setInterval(() => {
+      document.body.style.backgroundColor = 
+        ['black', 'darkred', '#300', 'black'][Math.floor(Math.random() * 4)];
+    }, 200);
+  }
+
+  document.getElementById('scanButton').addEventListener('click', startPrank);
+</script>
 </body>
 </html>
