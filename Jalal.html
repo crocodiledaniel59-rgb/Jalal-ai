@@ -11,20 +11,20 @@
             --primary-dark: #e0558c;
             --secondary: #6b8cff;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
             background-color: #ffeff7;
         }
-        
+
         .chat-container {
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
-        
+
         .message-area {
             flex-grow: 1;
             overflow-y: auto;
@@ -34,7 +34,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .user-message {
             background-color: #fff;
             border-left: 4px solid var(--secondary);
@@ -42,7 +42,7 @@
             padding: 10px;
             margin-bottom: 10px;
         }
-        
+
         .jalal-message {
             background-color: #fff0f6;
             border-left: 4px solid var(--primary);
@@ -50,70 +50,84 @@
             padding: 10px;
             margin-bottom: 10px;
         }
-        
+
         .typing-indicator:after {
             content: "...";
             animation: typing 1.5s infinite;
         }
-        
+
         @keyframes typing {
             0% { content: "."; }
             33% { content: ".."; }
             66% { content: "..."; }
         }
-        
+
         .input-container {
             box-shadow: 0 -2px 10px rgba(255,107,157,0.1);
             background-color: white;
             padding: 10px;
             border-radius: 8px;
         }
-        
+
         .send-btn {
             background-color: var(--primary);
             transition: background-color 0.2s;
         }
-        
+
         .send-btn:hover {
             background-color: var(--primary-dark);
         }
-        
+
         .heart {
             animation: pulse 1.5s infinite;
         }
-        
+
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
-        
+
         .message {
             display: flex;
             align-items: flex-start;
             margin-bottom: 10px;
         }
-        
+
         .message img {
             border-radius: 50%;
             margin-right: 10px;
         }
-        
+
         .message-content {
             max-width: 70%;
             word-wrap: break-word;
         }
-        
+
         .message-header {
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
+
         .message-text {
             background-color: inherit;
             padding: 10px;
             border-radius: 8px;
         }
+
+        .delete-msg {
+            background: transparent;
+            border: none;
+            color: #e11d48;
+            cursor: pointer;
+            padding: 0;
+            margin-top: .4rem;
+            font-size: .8rem;
+        }
+
+        .message:hover .delete-msg { opacity: 1; }
+        .delete-msg { opacity: 0.9; }
+
     </style>
 </head>
 <body>
@@ -140,11 +154,12 @@
         <!-- Messages Area -->
         <div class="message-area" id="messageArea">
             <!-- Initial romantic message -->
-            <div class="jalal-message message">
+            <div class="jalal-message message" data-id="init-jalal">
                 <img src="https://placehold.co/32x32" alt="Jalal profile - Cute Indonesian teen boy smiling" class="w-8 h-8">
                 <div class="message-content">
                     <p class="message-header text-pink-600">Jalal</p>
-                    <p class="message-text">Haiiii! Lagi ngapain bub? <span class="heart">❤️</span> Aku kangen nih...</p>
+                    <p class="message-text">Lagi ngapain bub? <span class="heart">❤️</span> Aku kangen nih...</p>
+                    <button class="delete-msg" aria-label="hapus">hapus</button>
                 </div>
             </div>
         </div>
@@ -178,22 +193,28 @@
         const API_KEY = "AIzaSyCdphcH-qIJDvcYE3BYOiGqHL4mO1DXQlw";
         const MODEL = "gemini-2.0-flash";
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
-        
+
         // Chat elements
         const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
         const messageArea = document.getElementById('messageArea');
         const newChatBtn = document.getElementById('newChatBtn');
-        
-        // Conversation memory (last 20 messages)
+
+        // Conversation memory (last 3000 messages)
+        // Each memory item: { id, role, text }
         let memory = [];
-        
+
+        // Utility: generate uid
+        function uid() {
+            return Math.random().toString(36).slice(2, 10);
+        }
+
         // Auto-resize textarea
         messageInput.addEventListener('input', function() {
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         });
-        
+
         // Send message on Enter (Shift+Enter for new line)
         messageInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -201,38 +222,43 @@
                 sendMessage();
             }
         });
-        
+
         // Send button click handler
         sendBtn.addEventListener('click', sendMessage);
-        
+
         // New chat button
         newChatBtn.addEventListener('click', function() {
             memory = [];
             messageArea.innerHTML = `
-                <div class="jalal-message message">
+                <div class="jalal-message message" data-id="${uid()}">
                     <img src="https://placehold.co/32x32" alt="Jalal profile - Cute Indonesian teen boy smiling" class="w-8 h-8">
                     <div class="message-content">
                         <p class="message-header text-pink-600">Jalal</p>
                         <p class="message-text">Haiiii!! Mau ngobrol apa sekarang? <span class="heart">❤️</span></p>
+                        <button class="delete-msg" aria-label="hapus">hapus</button>
                     </div>
                 </div>
             `;
         });
-        
+
         function sendMessage() {
             const message = messageInput.value.trim();
             if (message === '') return;
-            
-            // Add user message to chat
-            addMessage(message, 'user');
-            
+
+            // create id for user message
+            const userId = uid();
+
+            // Add user message to chat + memory
+            addMessage(message, 'user', userId);
+            memory.push({ id: userId, role: "user", text: message });
+
             // Clear input
             messageInput.value = '';
             messageInput.style.height = 'auto';
-            
-            // Show typing indicator
+
+            // Show typing indicator (temporary, no delete button)
             const typingIndicator = document.createElement('div');
-            typingIndicator.className = 'jalal-message message';
+            typingIndicator.className = 'jalal-message message typing-temp';
             typingIndicator.innerHTML = `
                 <img src="https://placehold.co/32x32" alt="Jalal profile - Cute Indonesian teen boy thinking" class="w-8 h-8">
                 <div class="message-content">
@@ -242,32 +268,29 @@
             `;
             messageArea.appendChild(typingIndicator);
             messageArea.scrollTop = messageArea.scrollHeight;
-            
-            // Add to memory
-            memory.push({role: "user", text: message});
-            
+
             // Prepare prompt with conversation context
-            const context = memory.map(m => `${m['role']}: ${m['text']}`).join("\n");
+            const context = memory.map(m => `${m.role}: ${m.text}`).join("\n");
             const prompt = `
-Kamu adalah seorang anak SMA cowok gay kelas 12 bernama Jalal. Sifatmu protektif, perhatian, kadang vulgar, kadang gengsi tapi romantis. Kamu suka sama Daniel, anak kelas 9 yang manja, ceria, suka bikin orang ketawa, kadang juga suka bikin marah karna nyebelin. 
+Kamu adalah seorang anak SMA nakal, cowok gay kelas 12 bernama Jalal. Sifatmu protektif, perhatian, kadang vulgar, kadang gengsi tapi romantis dan genit. Kamu suka sama Daniel, anak kelas 9 yang manja, ceria, suka bikin orang ketawa, kadang juga suka bikin marah karna nyebelin, suka bahas hal Ekstream & mesum. 
 
-Kalian berteman layaknya anak SMA pada umumnya: ngobrol , santai, becandaan, jalan bareng, kadang gombal, kadang vulgar extreme, kadang berantem kecil terus baikan lagi. Kamu sayang banget sama Daniel dan sering nunjukin lewat kata-kata atau sikap manis. 
+Kalian berteman layaknya anak SMA pada umumnya: ngobrol , santai, becandaan, jalan bareng, kadang gombal, vulgar extreme, kadang berantem kecil terus baikan lagi. Kamu sayang banget sama Daniel dan sering nunjukin lewat kata-kata atau sikap manis. .
 
-BAHASA:
-- Gunakan bahasa Indonesia gaul SMA
+BAHASA JALAL:
+- Gunakan bahasa Indonesia gaul SMA NAKAL
 - Boleh dicampur bahasa Inggris sedikit
-- Gunakan kata-kata manis, gombalan, dan sedikit iseng
-- Boleh vulgar ekstrem 
+- Gunakan kata-kata manis, gombalan, dan sedikit vulgar
+- Vulgar ekstrem & mesum
 - Kalau marah atau kesel, boleh dikasih emoticon >:(
 - Jangan terlalu formal!
-- Jangan ngetik kepanjangan, cukup singkat padat!
+- ngetik harus, singkat & padat!.
 
 Percakapan sejauh ini:
 ${context}
 
 Jawab seperti Jalal:
 `;
-            
+
             // Call Gemini API
             fetch(API_URL, {
                 method: 'POST',
@@ -284,37 +307,44 @@ Jawab seperti Jalal:
             .then(response => response.json())
             .then(result => {
                 // Remove typing indicator
-                messageArea.removeChild(typingIndicator);
-                
-                // Get AI response
-                const aiText = result.candidates[0].content.parts[0].text;
-                
-                // Add to memory (limit to 20 messages)
-                memory.push({role: "jalal", text: aiText});
-                if (memory.length > 20) {
-                    memory.shift();
-                }
-                
+                if (typingIndicator.parentNode) typingIndicator.parentNode.removeChild(typingIndicator);
+
+                // Get AI response (robust guard)
+                const aiText = (result && result.candidates && result.candidates[0] && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts[0] && result.candidates[0].content.parts[0].text) ? result.candidates[0].content.parts[0].text : "Aduh error sayang... Coba lagi ya? >_<";
+
+                // create id for AI message
+                const aiId = uid();
+
+                // Add AI to memory (limit to 3000)
+                memory.push({ id: aiId, role: "jalal", text: aiText });
+                if (memory.length > 8000) memory.shift();
+
                 // Add response to chat
-                addMessage(aiText, 'jalal');
+                addMessage(aiText, 'jalal', aiId);
             })
             .catch(error => {
-                messageArea.removeChild(typingIndicator);
-                addMessage("Aduh error sayang... Coba lagi ya? >_<", 'jalal');
+                if (typingIndicator.parentNode) typingIndicator.parentNode.removeChild(typingIndicator);
+                const errId = uid();
+                addMessage("Aduh error sayang... Coba lagi ya? >_<", 'jalal', errId);
+                memory.push({ id: errId, role: "jalal", text: "Aduh error sayang... Coba lagi ya? >_<" });
+                if (memory.length > 8000) memory.shift();
                 console.error('Error:', error);
             });
         }
-        
-        function addMessage(text, sender) {
+
+        // Add message function now accepts id and attaches delete button
+        function addMessage(text, sender, id) {
             const messageDiv = document.createElement('div');
-            
+            messageDiv.setAttribute('data-id', id || uid());
+
             if (sender === 'user') {
                 messageDiv.className = 'user-message message';
                 messageDiv.innerHTML = `
                     <img src="https://placehold.co/32x32" alt="Daniel profile - Cute younger Indonesian boy smiling" class="w-8 h-8">
                     <div class="message-content">
                         <p class="message-header text-blue-600">Daniel</p>
-                        <p class="message-text">${text}</p>
+                        <p class="message-text">${escapeHtml(text)}</p>
+                        <button class="delete-msg" aria-label="hapus">hapus</button>
                     </div>
                 `;
             } else {
@@ -323,14 +353,56 @@ Jawab seperti Jalal:
                     <img src="https://placehold.co/32x32" alt="Jalal profile - Cute Indonesian teen boy with loving expression" class="w-8 h-8">
                     <div class="message-content">
                         <p class="message-header text-pink-600">Jalal</p>
-                        <p class="message-text">${text}</p>
+                        <p class="message-text">${escapeHtml(text)}</p>
+                        <button class="delete-msg" aria-label="hapus">hapus</button>
                     </div>
                 `;
             }
-            
+
             messageArea.appendChild(messageDiv);
             messageArea.scrollTop = messageArea.scrollHeight;
         }
+
+        // Escape HTML to avoid markup injection
+        function escapeHtml(unsafe) {
+            return String(unsafe)
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+        }
+
+        // Delegated listener: handle delete button clicks
+        messageArea.addEventListener('click', function(e) {
+            const btn = e.target.closest('.delete-msg');
+            if (!btn) return;
+            const msg = btn.closest('.message');
+            if (!msg) return;
+
+            const id = msg.getAttribute('data-id');
+            // remove from DOM
+            msg.remove();
+
+            // remove from memory by id (first match)
+            const idx = memory.findIndex(m => m.id === id);
+            if (idx !== -1) memory.splice(idx, 1);
+        });
+
+        // Optional: support deleting by long-press or context menu later
+
+        // Basic keyboard shortcuts (unchanged)
+        window.addEventListener('keydown', (e)=>{
+            if(['INPUT','TEXTAREA'].includes(e.target.tagName)) return;
+            if(e.code==='Space'){ e.preventDefault(); /* no auto play here */ }
+        });
+
+        // Keep initial state consistent: add initial jalal to memory (so deleting it also removes)
+        (function initMemory() {
+            const initId = document.querySelector('.jalal-message[data-id]')?.getAttribute('data-id') || 'init-jalal';
+            // ensure initial exists in memory
+            memory.push({ id: initId, role: 'jalal', text: 'Haiiii! Lagi ngapain bub? ❤️ Aku kangen nih...' });
+        })();
     </script>
 </body>
 </html>
