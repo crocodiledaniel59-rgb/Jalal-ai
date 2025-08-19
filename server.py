@@ -25,8 +25,8 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
     
     def handle_chat_api(self):
         try:
-            # Get API key from environment
-            api_key = os.environ.get('GEMINI_API_KEY')
+            # Get API key from environment with fallback
+            api_key = os.environ.get('GEMINI_API_KEY', 'AIzaSyBSZUCrHWZcopKuyp9bZ6vIc-XqiTFYyBQ')
             if not api_key:
                 self.send_error_response(500, 'API key not configured')
                 return
