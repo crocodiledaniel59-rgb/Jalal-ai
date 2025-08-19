@@ -279,8 +279,8 @@ Aturan:
                 <div class="welcome-message">
                     <div class="welcome-content">
                         <i data-feather="message-circle"></i>
-                        <h3>Welcome to AI Chat Pro</h3>
-                        <p>Start a conversation with our AI assistant powered by Gemini 2.0 Flash</p>
+                        <h3>AI Chat without sensor</h3>
+                        <p>Start a conversation with our AI assistant provided by Daniel 🖕🏻😜🖕🏻</p>
                     </div>
                 </div>
             `;
