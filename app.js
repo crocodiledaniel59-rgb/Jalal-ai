@@ -280,7 +280,7 @@ Aturan:
                     <div class="welcome-content">
                         <i data-feather="message-circle"></i>
                         <h3>AI Chat without sensor</h3>
-                        <p>Start a conversation with our AI assistant, Provided by Daniel🖕🏻😜🖕🏻</p>
+                        <p>Start a conversation with our AI assistant, provided by Daniel🖕🏻😜🖕🏻</p>
                     </div>
                 </div>
             `;
