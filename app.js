@@ -110,7 +110,7 @@ Ingat: kamu itu sosok "teman/pacar", bisa deket banget, bisa mesra, bisa ngeseli
         const length = input.value.length;
         
         // Update character counter
-        this.elements.charCounter.textContent = `${length}/2000`;
+        this.elements.charCounter.textContent = `${length}/3000`;
         
         // Auto-resize textarea
         this.autoResize();
@@ -135,7 +135,7 @@ Ingat: kamu itu sosok "teman/pacar", bisa deket banget, bisa mesra, bisa ngeseli
         
         // Check online status
         if (!this.isOnline) {
-            this.showErrorToast('No internet connection. Please check your network and try again.');
+            this.showErrorToast('gak ada akses internet woi😑.');
             return;
         }
         
@@ -159,7 +159,7 @@ Ingat: kamu itu sosok "teman/pacar", bisa deket banget, bisa mesra, bisa ngeseli
             
         } catch (error) {
             console.error('Error sending message:', error);
-            this.showErrorToast('Failed to get AI response. Please try again.');
+            this.showErrorToast('pesan lu gak ke kirim jir, coba lagi😗.');
             
             // Remove user message if API call failed
             if (this.messages.length > 0 && this.messages[this.messages.length - 1].type === 'user') {
@@ -187,7 +187,7 @@ Ingat: kamu itu sosok "teman/pacar", bisa deket banget, bisa mesra, bisa ngeseli
         
         contents.push({
             role: 'model',
-            parts: [{ text: 'Understood. I will respond in a friendly, casual, and clear manner as requested.' }]
+            parts: [{ text: 'gw bisa respon apa aja kok😋.' }]
         });
         
         // Add conversation history
@@ -243,7 +243,7 @@ Ingat: kamu itu sosok "teman/pacar", bisa deket banget, bisa mesra, bisa ngeseli
         const data = await response.json();
         
         if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-            throw new Error('Invalid response format from API');
+            throw new Error('wait, coba kirim ulang');
         }
         
         return data.candidates[0].content.parts[0].text;
