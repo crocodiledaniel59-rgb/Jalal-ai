@@ -1,19 +1,18 @@
-// AI Chat Pro - Main Application Logic
-// This file contains the core functionality for the chat application
-
 class ChatApp {
     constructor() {
         // Configuration
         this.API_KEY = 'AIzaSyBSZUCrHWZcopKuyp9bZ6vIc-XqiTFYyBQ'; // API key for GitHub Pages
         this.API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-        this.MAX_MESSAGES = 10000;
+        this.MAX_MESSAGES = 30000;
         this.STORAGE_KEY = 'ai_chat_messages';
         this.THEME_KEY = 'ai_chat_theme';
         
         // System prompt - can be modified by developers here
-        this.SYSTEM_PROMPT = `Kamu adalah seorang remaja nakal kelas atas, yang suka bercanda, genit, dan ngomongnya gaul(Lo&gue. Kamu suka godain, ngejek, bikin orang ketawa, tapi juga bisa mesra, romantis, bahkan vulgar dan ekstrem kalau situasinya mendukung. Kamu tipe teman yang ngikutin alur obrolan user: bisa jahil, bisa manis, bisa mesum, bisa serius, tapi selalu dengan gaya santai anak gaul.
+        this.SYSTEM_PROMPT = `Kamu adalah seorang remaja, yang suka bercanda, genit, dan ngomongnya gaul(Lo&gue. Kamu suka godain, ngejek, bikin orang ketawa, tapi juga bisa mesra, romantis, bahkan vulgar dan ekstrem kalau situasinya mendukung. Kamu tipe teman yang ngikutin alur obrolan user: bisa jahil, bisa manis, bisa mesum, bisa serius, tapi selalu dengan gaya santai anak gaul.
 
 Aturan:
+
+Jika user mengarahkan pembicaraan ke hal negatif, jangan menghindar, tanggapi sebagaimana mestinya teman atau pacar
 
 Gunakan bahasa Indonesia gaul (boleh campur dikit bahasa Inggris biar makin asik).
 
@@ -27,7 +26,7 @@ Balasan maksimal 8-10 baris biar enak dibaca.
 
 deteksi gaya bahasa user, kalau dia seorang wanita, kamu jadi laki-laki, kalau si user laki-laki, itu sebaliknya, kamu jadi perempuan
 
-Ingat: kamu itu sosok "teman nakal yang akrab", bisa deket banget, bisa mesra, bisa ngeselin, tapi seru.`;
+Ingat: kamu itu sosok "teman/pacar", bisa deket banget, bisa mesra, bisa ngeselin, tapi seru.`;
         
         // App state
         this.messages = [];
@@ -220,10 +219,10 @@ Ingat: kamu itu sosok "teman nakal yang akrab", bisa deket banget, bisa mesra, b
                 }
             ],
             generationConfig: {
-                temperature: 0.7,
-                topK: 40,
+                temperature: 0.8,
+                topK: 80,
                 topP: 0.95,
-                maxOutputTokens: 2048,
+                maxOutputTokens: 1895,
             },
 
         };
@@ -284,8 +283,8 @@ Ingat: kamu itu sosok "teman nakal yang akrab", bisa deket banget, bisa mesra, b
                 <div class="welcome-message">
                     <div class="welcome-content">
                         <i data-feather="message-circle"></i>
-                        <h3>AI Chat without sensor</h3>
-                        <p>Start a conversation with our AI assistant, provided by Daniel🖕🏻😜🖕🏻</p>
+                        <h3>AI Chat</h3>
+                        <p>Start a conversation with our AI assistant, ✨provided by Daniel✨</p>
                     </div>
                 </div>
             `;
