@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chat AI — Maintenance</title>
+  <meta name="description" content="Chat AI sedang ditutup sementara untuk maintenance." />
+
+  <style>
+    :root{
+      --bg1:#0f1115;
+      --bg2:#151a22;
+      --accent:#7c3aed; /* deep cyber purple */
+      --accent-2:#22d3ee;
+      --glass-bg: rgba(255,255,255,.08);
+      --glass-brd: rgba(255,255,255,.18);
+      --text:#e8eaf0;
+      --muted:#a6adbb;
+      --ok:#10b981;
+      --warn:#f59e0b;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 90% -10%, rgba(124,58,237,.25), transparent 50%),
+        radial-gradient(900px 600px at -10% 110%, rgba(34,211,238,.18), transparent 50%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+    }
+
+    /* Subtle animated grid */
+    .grid{
+      position:fixed; inset:-200vmax;
+      background:
+        linear-gradient(transparent 95%, rgba(255,255,255,.06) 95%) 0 0 / 28px 28px,
+        linear-gradient(90deg, transparent 95%, rgba(255,255,255,.06) 95%) 0 0 / 28px 28px;
+      mask-image: radial-gradient(closest-side, rgba(0,0,0,.75), transparent 90%);
+      animation: floatGrid 18s linear infinite;
+      pointer-events:none;
+    }
+    @keyframes floatGrid{ to{ transform: translate3d(28px,28px,0);} }
+
+    .wrap{
+      width:min(720px, 92vw);
+      padding:24px;
+    }
+
+    .card{
+      position:relative;
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-brd);
+      border-radius: 22px;
+      padding: 28px 24px;
+      box-shadow:
+        0 10px 30px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      overflow:hidden;
+    }
+
+    /* top accent line */
+    .card::before{
+      content:"";
+      position:absolute; inset:0 0 auto 0; height:3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      opacity:.9;
+    }
+
+    .head{
+      display:flex; align-items:center; gap:14px; margin-bottom:10px;
+    }
+    .logo{
+      width:54px; height:54px; border-radius:14px;
+      display:grid; place-items:center;
+      background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(34,211,238,.2));
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 8px 24px rgba(124,58,237,.25);
+      font-size:28px;
+    }
+    h1{
+      font-size: clamp(18px, 2.4vw, 24px);
+      margin:0;
+      letter-spacing:.2px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:12px; color:#fff; background:rgba(124,58,237,.28);
+      border:1px solid rgba(124,58,237,.5);
+      padding:6px 10px; border-radius:999px;
+    }
+
+    .desc{
+      color:var(--muted);
+      line-height:1.6;
+      margin:12px 0 18px;
+    }
+
+    .status{
+      display:flex; align-items:center; gap:10px; margin:14px 0 18px;
+      color:var(--text);
+    }
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: var(--warn);
+      box-shadow: 0 0 10px var(--warn);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{ transform:scale(1); opacity:.9 }
+      50%{ transform:scale(1.35); opacity:.6 }
+    }
+
+    .bar{
+      position:relative; height:10px; border-radius:999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.14);
+      overflow:hidden;
+    }
+    .bar > i{
+      position:absolute; inset:0;
+      background: linear-gradient(90deg, rgba(124,58,237,.9), rgba(34,211,238,.9));
+      width:40%; border-radius:999px;
+      animation: load 2.2s ease-in-out infinite;
+    }
+    @keyframes load{
+      0%{ left:-40% }
+      50%{ left:60% }
+      100%{ left:100% }
+    }
+
+    .actions{
+      display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;
+    }
+    .btn{
+      appearance:none; border:none; cursor:pointer;
+      padding:12px 14px; border-radius:12px;
+      color:#fff; font-weight:600; letter-spacing:.2px;
+      background: linear-gradient(135deg, rgba(124,58,237,.9), rgba(34,211,238,.9));
+      box-shadow: 0 8px 20px rgba(124,58,237,.35);
+      transition: transform .15s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 10px 26px rgba(124,58,237,.45); }
+    .btn:active{ transform: translateY(0); opacity:.95 }
+
+    .btn.sec{
+      background: transparent;
+      border:1px solid rgba(255,255,255,.2);
+      color:var(--text);
+      box-shadow:none;
+    }
+    .tiny{
+      display:block; margin-top:12px; color:var(--muted); font-size:12px;
+    }
+
+    footer{
+      position:fixed; inset:auto 0 14px 0;
+      display:flex; justify-content:center; pointer-events:none;
+      font-size:12px; color:rgba(255,255,255,.55);
+    }
+    footer span{ pointer-events:auto; background:rgba(0,0,0,.25); padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.12) }
+
+    @media (max-width:420px){
+      .wrap{ padding:16px }
+      .card{ padding:22px 18px }
+      .logo{ width:48px; height:48px; font-size:24px }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <section class="card" role="status" aria-live="polite">
+      <div class="head">
+        <div class="logo" aria-hidden="true">🤖🛠️</div>
+        <div>
+          <h1>Chat AI sedang <strong>maintenance</strong></h1>
+          <span class="badge">Sementara ditutup • improving reliability</span>
+        </div>
+      </div>
+
+      <p class="desc">
+        Tenang, ini cuma sementara. Kami lagi nge-tune model & infrastruktur biar jawaban makin stabil, cepat, dan <i>on point</i>.
+      </p>
+
+      <div class="status">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Progress maintenance berjalan…</span>
+      </div>
+
+      <div class="bar" aria-hidden="true"><i></i></div>
+
+      <div class="actions">
+        <button class="btn" id="retryBtn">Coba Lagi</button>
+        <button class="btn sec" id="contactBtn">Feedback</button>
+      </div>
+
+      <small class="tiny">Jika halaman ini masih muncul setelah refresh, berarti maintenance masih berlangsung.</small>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="y"></span> Your Chat AI • All systems monitored</span>
+  </footer>
+  <script>
+    // Tahun otomatis
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Tombol coba lagi -> reload halaman
+    document.getElementById('retryBtn').addEventListener('click', () => {
+      location.reload();
+    });
+
+    // Tombol contact: arahkan ke form/DM (ganti URL sesuai milikmu)
+    document.getElementById('contactBtn').addEventListener('click', () => {
+      window.open('mailto: mohrizqidanielpratama@gmail.com?subject=Support%20Chat%20AI', '_blank', 'noopener');
+    });
+
+    // Optional: jika kamu ingin auto-redirect balik ke app saat maintenance selesai,
+    // kamu bisa ping file JSON status di GitHub Pages tiap beberapa detik.
+    // Contoh kerangka (non-aktif, tinggal sesuaikan URL & logic-nya):
+    /*
+    async function checkStatus(){
+      try{
+        const res = await fetch('/status.json', { cache:'no-store' });
+        const data = await res.json(); // { maintenance: true/false }
+        if(data && data.maintenance === false){
+          window.location.href = '/ai/index.html'; // kembali ke app
+        }
+      }catch(e){}
+    }
+    setInterval(checkStatus, 10000);
+    */
+  </script>
+</body>
+</html>
