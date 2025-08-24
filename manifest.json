@@ -8,13 +8,13 @@
   "description": "A new version of UI for AI Chat.",
   "icons": [
     {
-      "src": "images/icon-192x192.png",
-      "sizes": "192x192",
+      "src": "images/icon-139x139.png",
+      "sizes": "139x139",
       "type": "image/png"
     },
     {
-      "src": "images/icon-512x512.png",
-      "sizes": "512x512",
+      "src": "images/icon-368x368.png",
+      "sizes": "368x368",
       "type": "image/png"
     }
   ]
