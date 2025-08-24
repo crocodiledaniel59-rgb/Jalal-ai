@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ai-chat';
+const CACHE_NAME = 'ai-chat-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html'
